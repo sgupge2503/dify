@@ -530,7 +530,7 @@ services:
   # API service
   api:
     image: langgenius/dify-api:1.6.0
-    restart: always
+    restart: no
     environment:
       # Use the shared environment variables.
       <<: *shared-api-worker-env
@@ -559,7 +559,7 @@ services:
   # The Celery worker for processing the queue.
   worker:
     image: langgenius/dify-api:1.6.0
-    restart: always
+    restart: no
     environment:
       # Use the shared environment variables.
       <<: *shared-api-worker-env
@@ -585,7 +585,7 @@ services:
   # Frontend web application.
   web:
     image: langgenius/dify-web:1.6.0
-    restart: always
+    restart: no
     environment:
       CONSOLE_API_URL: ${CONSOLE_API_URL:-}
       APP_API_URL: ${APP_API_URL:-}
@@ -647,7 +647,7 @@ services:
   # The DifySandbox
   sandbox:
     image: langgenius/dify-sandbox:0.2.12
-    restart: always
+    restart: no
     environment:
       # The DifySandbox configurations
       # Make sure you are changing this key for your deployment with a strong key.
@@ -671,7 +671,7 @@ services:
   # plugin daemon
   plugin_daemon:
     image: langgenius/dify-plugin-daemon:0.1.3-local
-    restart: always
+    restart: no
     environment:
       # Use the shared environment variables.
       <<: *shared-api-worker-env
@@ -730,7 +730,7 @@ services:
   # https://docs.dify.ai/learn-more/faq/install-faq#18-why-is-ssrf-proxy-needed%3F
   ssrf_proxy:
     image: ubuntu/squid:latest
-    restart: always
+    restart: no
     volumes:
       - ./ssrf_proxy/squid.conf.template:/etc/squid/squid.conf.template
       - ./ssrf_proxy/docker-entrypoint.sh:/docker-entrypoint-mount.sh
@@ -770,7 +770,7 @@ services:
   # used for reverse proxying the API service and Web service.
   nginx:
     image: nginx:latest
-    restart: always
+    restart: no
     volumes:
       - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template
       - ./nginx/proxy.conf.template:/etc/nginx/proxy.conf.template
@@ -812,7 +812,7 @@ services:
     profiles:
       - ''
       - weaviate
-    restart: always
+    restart: no
     volumes:
       # Mount the Weaviate data directory to the con tainer.
       - ./volumes/weaviate:/var/lib/weaviate
@@ -836,7 +836,7 @@ services:
     image: langgenius/qdrant:v1.7.3
     profiles:
       - qdrant
-    restart: always
+    restart: no
     volumes:
       - ./volumes/qdrant:/qdrant/storage
     environment:
@@ -847,7 +847,7 @@ services:
     build: ./couchbase-server
     profiles:
       - couchbase
-    restart: always
+    restart: no
     environment:
       - CLUSTER_NAME=dify_search
       - COUCHBASE_ADMINISTRATOR_USERNAME=${COUCHBASE_USER:-Administrator}
@@ -880,7 +880,7 @@ services:
     image: pgvector/pgvector:pg16
     profiles:
       - pgvector
-    restart: always
+    restart: no
     environment:
       PGUSER: ${PGVECTOR_PGUSER:-postgres}
       # The password for the default postgres user.
@@ -907,7 +907,7 @@ services:
     image: vastdata/vastbase-vector
     profiles:
       - vastbase
-    restart: always
+    restart: no
     environment:
       - VB_DBCOMPATIBILITY=PG
       - VB_DB=dify
@@ -931,7 +931,7 @@ services:
     image: tensorchord/pgvecto-rs:pg16-v0.3.0
     profiles:
       - pgvecto-rs
-    restart: always
+    restart: no
     environment:
       PGUSER: ${PGVECTOR_PGUSER:-postgres}
       # The password for the default postgres user.
@@ -953,7 +953,7 @@ services:
     image: ghcr.io/chroma-core/chroma:0.5.20
     profiles:
       - chroma
-    restart: always
+    restart: no
     volumes:
       - ./volumes/chroma:/chroma/chroma
     environment:
@@ -967,7 +967,7 @@ services:
     container_name: oceanbase
     profiles:
       - oceanbase
-    restart: always
+    restart: no
     volumes:
       - ./volumes/oceanbase/data:/root/ob
       - ./volumes/oceanbase/conf:/root/.obd/cluster
@@ -993,7 +993,7 @@ services:
     image: container-registry.oracle.com/database/free:latest
     profiles:
       - oracle
-    restart: always
+    restart: no
     volumes:
       - source: oradata
         type: volume
@@ -1114,7 +1114,7 @@ services:
     profiles:
       - opengauss
     privileged: true
-    restart: always
+    restart: no
     environment:
       GS_USERNAME: ${OPENGAUSS_USER:-postgres}
       GS_PASSWORD: ${OPENGAUSS_PASSWORD:-Dify@123}
@@ -1136,7 +1136,7 @@ services:
     image: myscale/myscaledb:1.6.4
     profiles:
       - myscale
-    restart: always
+    restart: no
     tty: true
     volumes:
       - ./volumes/myscale/data:/var/lib/clickhouse
@@ -1151,7 +1151,7 @@ services:
     image: matrixorigin/matrixone:2.1.1
     profiles:
       - matrixone
-    restart: always
+    restart: no
     volumes:
       - ./volumes/matrixone/data:/mo-data
     ports:
@@ -1165,7 +1165,7 @@ services:
     profiles:
       - elasticsearch
       - elasticsearch-ja
-    restart: always
+    restart: no
     volumes:
       - ./elasticsearch/docker-entrypoint.sh:/docker-entrypoint-mount.sh
       - dify_es01_data:/usr/share/elasticsearch/data
@@ -1201,7 +1201,7 @@ services:
       - elasticsearch
     depends_on:
       - elasticsearch
-    restart: always
+    restart: no
     environment:
       XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: d1a66dfd-c4d3-4a0a-8290-2abcb83ab3aa
       NO_PROXY: localhost,127.0.0.1,elasticsearch,kibana
@@ -1226,7 +1226,7 @@ services:
     image: downloads.unstructured.io/unstructured-io/unstructured-api:latest
     profiles:
       - unstructured
-    restart: always
+    restart: no
     volumes:
       - ./volumes/unstructured:/app/data
 
